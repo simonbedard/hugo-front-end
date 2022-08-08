@@ -15,19 +15,9 @@ export const availableLocales: ILocales = {
     flag: '🇺🇸',
   },
   id: {
-    name: 'Bahasa',
-    iso: 'id',
-    flag: '🇮🇩',
-  },
-  ja: {
-    name: '日本語',
-    iso: 'ja',
-    flag: '🇯🇵',
-  },
-  ko: {
-    name: '한국어',
-    iso: 'ko',
-    flag: '🇰🇷',
+    name: 'Français',
+    iso: 'fr',
+    flag: '🇨🇦',
   },
 }
 
@@ -57,6 +47,8 @@ export function LanguageManager() {
 
   // watchers
   watch(localeSetting, (localeSetting) => {
+    console.log(localeSetting);
+    
     localeUserSetting.value = localeSetting
     locale.value = localeSetting
   })

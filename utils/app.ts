@@ -1,5 +1,6 @@
 import { ThemeManager } from './theme'
 import { LanguageManager } from './lang'
+import { SearchManager } from './search'
 
 export interface IApp {
   name: string
@@ -25,6 +26,9 @@ export function AppSetup() {
   // use language manager
   const languageManager = LanguageManager()
 
+  // use search manager
+  const searchManager = SearchManager();
+
   // vue transition bug handle
   const messages = [
     `Uncaught NotFoundError: Failed to execute 'insertBefore' on 'Node': The node before which the new node is to be inserted is not a child of this node.`, // chromium based
@@ -44,5 +48,6 @@ export function AppSetup() {
     app,
     themeManager,
     languageManager,
+    searchManager,
   }
 }

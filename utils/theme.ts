@@ -46,7 +46,7 @@ export function ThemeManager() {
   )
 
   // wathcers
-  const onThemeSettingChange = (themeSetting: IThemeSettingOptions) => {
+  const onThemeSettingChange = (themeSetting: IThemeSettingOptions) => {    
     themeUserSetting.value = themeSetting
     if (themeSetting === 'realtime') {
       themeCurrent.value = getRealtimeTheme()

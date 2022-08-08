@@ -6,8 +6,7 @@ import p from './../package.json';
 
 // Composable
 const { t } = useLang()
-const images = useImages();
-
+const images = useImages()
 // Compouted variable reference
 const Chunks = computed(() => {
   const threePartIndex = images.images.length / 4;
@@ -19,18 +18,17 @@ const Chunks = computed(() => {
   return [firstPart, thirdPart ,forstPart, secondPart];
 });
 
-
-
 onBeforeMount(async () => {
-  const Url = `http://localhost:3012/api/v1/search/terms/natures/1`;
-  const response = await fetch(Url)
-  if (response.status !== 200)
-    throw new Error(`error when fetching IMAGES : Start loading from API`)
-
-  const data = (await response.json());
-  shuffle(data.data);
-  images.swap(data.data, "StartLoading", images.page);
-  console.log('On Before Mounted');
+  if(images.firstLoad){
+    const Url = `http://localhost:3012/api/v1/search/terms/natures/1`;
+    const response = await fetch(Url)
+    if (response.status !== 200)
+      throw new Error(`error when fetching IMAGES : Start loading from API`)
+  
+    const data = (await response.json());
+    shuffle(data.data);
+    images.swap(data.data, "StartLoading", images.page);
+  }
 });
 
 onMounted(() => {
