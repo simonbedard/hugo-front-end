@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { useImages } from '~/stores/images';
 import { shuffle } from '~/utils/arr';
 import { ISearchHistory } from '~/utils/search';
@@ -8,6 +9,8 @@ const search = ref<string>(images.terms);
 const searchHistory = useState<Array<ISearchHistory>>('search.history');
 
 let errorMessage = ref<any>(null);
+const checkedNames = ref<Array<String>>([]);
+const providers = reactive(['Unsplash', 'Pexel', 'Pixabay', 'Deposite']);
 
 defineProps({
   text: {
@@ -16,25 +19,28 @@ defineProps({
   },
 });
 
-
+images.filters.providers = checkedNames;
 // methods
 const searchQuery = async () => {
+
   try {
     images.loading(true);
     const FormatedValue = search.value.toLowerCase();
     const API_URL = `http://localhost:3012/api/v1/search/terms`
-    const Url = `${API_URL}/${FormatedValue}/${images.page}`;
+    let Url:URL=  new URL(`${API_URL}/${FormatedValue}/${images.page}`);
+    
+    if(images.filters.providers.length > 0){
+      // There is a provider filters
+      Url.searchParams.set('provider', images.filters.providers.join(","));
+    }
 
-    const response = await fetch(Url);
-
+    const response = await fetch(Url.toString());
     if (response.status !== 200){
       throw new Error(`error when fetching IMAGES : ${search.value} from API`)
     }
     
     const data = (await response.json());
-
     shuffle(data.data);
-        
     searchHistory.value.push({title: FormatedValue});
 
     // Redirect to homepage search
@@ -50,28 +56,8 @@ const searchQuery = async () => {
   }
 }
 
-const loadMore = async () => {
-  images.loading(true);
-      
-    const API_URL = `http://localhost:3012/api/v1/search/terms`
-    const Url = `${API_URL}/${search.value}/${images.page}`;
-    const response = await fetch(Url)
-    if (response.status !== 200)
-      throw new Error(`error when fetching IMAGES : ${search.value} from API`)
-    
-    const data = (await response.json());
-    shuffle(data.data);
-   // Swap array of images 
-    images.append(data.data, (images.page+1));
-    images.loading(false);
-}
-
-defineExpose({
-  loadMore: loadMore
-});
-
 onMounted(() => {
-  // console.log(searchHistory);
+
 })
 
 </script>
@@ -79,10 +65,33 @@ onMounted(() => {
 <template>
   <div>
       <div class="flex flex-col items-center md:flex-row md:space-x-2 mx-20">
-      
+          <Popover class="relative">
+              <PopoverButton>
+                <Button
+                  class="capitalize w-full md:w-auto"
+                  text="Filters"
+                  type="secondary"
+                  size="md"
+                />
+              </PopoverButton>
+
+              <PopoverPanel class="absolute z-50 top-full left-0 w-100	mt-2 p-4 outline-none bg-white rounded-lg ring-1 ring-gray-900/10 shadow-lg overflow-hidden text-sm text-gray-700 font-semibold dark:bg-gray-800 dark:ring-0 dark:highlight-white/5 dark:text-gray-300">
+                  <div class="filter-zone">
+                    <p class="font-bold pb-2 mb-2 border-b border-solid border-gray-700">Filter by Provide</p>
+
+                      <div class="checkboxs-list flex items-center">
+                        <div class="input flex mx-1 items-center" v-for="provider in providers" :key="provider">
+                          <input class="appearance-none" type="checkbox" :id="provider" :value="provider.toLowerCase()" v-model="checkedNames">
+                          <label class="cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/30" :for="provider">{{ provider }}</label>
+                        </div>
+                      </div>
+                  </div>
+              </PopoverPanel>
+          </Popover>
           <FormTextInput
             v-model="search"
             :modelValue="search"
+            @keydown.enter="searchQuery"
             size="md"
             class="w-full">
             <template #prefix-disabled>
@@ -91,7 +100,6 @@ onMounted(() => {
               </span>
             </template>
           </FormTextInput>
-
           <Button
             class="capitalize w-full md:w-auto"
             text="Search"
@@ -105,3 +113,11 @@ onMounted(() => {
       </div>
   </div>
 </template>
+
+
+<style lang="scss">
+  input[type="checkbox"]:checked + label {
+      color: theme('colors.primary.500') !important;
+      background-color: theme('colors.gray.900') !important;
+  }
+</style>

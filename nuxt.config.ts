@@ -39,6 +39,9 @@ export default defineNuxtConfig({
     '~/assets/sass/vendor.scss',
     '~/assets/sass/app.scss',
   ],
+  publicRuntimeConfig: {
+    API_BASE_URL: process.env.API_BASE_URL
+  },
 
   // plugins
   plugins: ['~/plugins/navbar.ts'],
@@ -88,7 +91,7 @@ export default defineNuxtConfig({
     vueI18n: {
       locale: 'en',
       fallbackLocale: 'en',
-      availableLocales: ['en', 'id', 'ja', 'ko'],
+      availableLocales: ['en', 'id'],
     },
   },
 
@@ -113,4 +116,5 @@ export default defineNuxtConfig({
 
   // content
   content: {},
+  
 })

@@ -7,32 +7,25 @@ import p from './../package.json';
 // Composable
 const { t } = useLang()
 const images = useImages()
-// Compouted variable reference
-const Chunks = computed(() => {
-  const threePartIndex = images.images.length / 4;
-  const Images = images.images;
-  const forstPart = Images.slice((threePartIndex*3), (threePartIndex*4));
-  const thirdPart = Images.slice((threePartIndex*2), (threePartIndex*3));
-  const secondPart = Images.slice(threePartIndex, ((threePartIndex*2)));
-  const firstPart = Images.slice(0, threePartIndex);
-  return [firstPart, thirdPart ,forstPart, secondPart];
-});
+const nuxtApp = useNuxtApp()
 
 onBeforeMount(async () => {
+  
   if(images.firstLoad){
-    const Url = `http://localhost:3012/api/v1/search/terms/natures/1`;
+    const Url = `${nuxtApp.$config.API_BASE_URL}search/terms/natures/1`;
     const response = await fetch(Url)
     if (response.status !== 200)
       throw new Error(`error when fetching IMAGES : Start loading from API`)
   
     const data = (await response.json());
     shuffle(data.data);
-    images.swap(data.data, "StartLoading", images.page);
+    images.swap(data.data, "natures", images.page);
   }
 });
 
 onMounted(() => {
    console.log('On Mounted');
+   
 })
 
 onUpdated(() => {
@@ -45,15 +38,12 @@ definePageMeta({
   layout: 'page',
 })
 
-const SearchForm = ref();
-
-const loadMore = () => {
-  SearchForm.value.loadMore()   
-}
 
 </script>
 
+
 <template> 
+  
   <PageWrapper>
     <PageSection>
       <Alert
@@ -78,7 +68,7 @@ const loadMore = () => {
       <div v-if="images.images.length > 0">
         <h2 class="mt-10 mb-4 text-lg font-bold">Searching for: <span class="text-green">({{ images.terms }})</span></h2>
         <div class="grid">
-          <div class="col" v-for="col in Chunks" :key="col">
+          <div class="col" v-for="col in images.chunks" :key="col">
             <div class="card bg-gray-900 relative group" v-for="image in col" :key="image">
               <a :href="image.src.download" target="_blank" rel="noopener noreferrer">
                 <img class="rounded-lg w-full group-hover:opacity-60 ease-out duration-300" :src="image.src.thumbnail" :alt="image.src.alt">
@@ -95,7 +85,7 @@ const loadMore = () => {
               text="Load more ..."
               type="primary"
               size="md"
-              @click="loadMore"
+              @click="$emit('loadMoreImages')"
             />
         </div>
       </div>
