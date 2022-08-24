@@ -14,7 +14,6 @@ export function SearchManager() {
   
   // wathcers
   watch(searchHistory, (history) => {
-      console.log(toRaw(history));
       searchHistoryCookie.value = Object.assign([], history);
     },
     { deep: true }

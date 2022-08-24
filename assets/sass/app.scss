@@ -37,6 +37,7 @@ html.dark {
 }
 
 // transitions
+/*
 .page-enter-active {
   transition: all 0.1s ease-out;
 }
@@ -47,7 +48,7 @@ html.dark {
 .page-leave-to {
   transform: translateY(20px);
   opacity: 0;
-}
+}*/
 
 .layout-enter-active {
   transition: all 0.1s ease-out;

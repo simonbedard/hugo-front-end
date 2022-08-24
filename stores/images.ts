@@ -37,6 +37,10 @@ export const useImages = defineStore('images', {
       this.page = page;
       this.firstLoad = false;
     },
+    reset(){
+      this.page = 1;
+      this.images = [];
+    },
     append(update: Array<string>,page: number){
       this.page = page;
       this.images = [...this.images, ...update];
@@ -56,9 +60,9 @@ export const useImages = defineStore('images', {
           throw new Error(`error when fetching IMAGES : ${this.terms} from API`)
         
         const data = (await response.json());
-        shuffle(data.data);
-      // Swap array of images 
-        this.append(data.data, (this.page+1));
+        shuffle(data.DATA);
+        // Swap array of images 
+        this.append(data.DATA, (this.page+1));
         this.loading(false);
         console.log('load more images');
     },

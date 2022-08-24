@@ -20,6 +20,8 @@ declare module '@vue/runtime-core' {
     'IconIc:baselineContentCopy': typeof import('~icons/ic/baseline-content-copy')['default']
     IconLa: language': typeof import('~icons/la/language')['default']
     'IconLa:language': typeof import('~icons/la/language')['default']
+    IconMaterialSymbols: cropLandscapeOutline': typeof import('~icons/material-symbols/crop-landscape-outline')['default']
+    'IconMaterialSymbols:cropLandscapeOutline': typeof import('~icons/material-symbols/crop-landscape-outline')['default']
     IconMdi: githubFace': typeof import('~icons/mdi/github-face')['default']
     'IconMdi:checkCircle': typeof import('~icons/mdi/check-circle')['default']
     'IconMdi:githubFace': typeof import('~icons/mdi/github-face')['default']
