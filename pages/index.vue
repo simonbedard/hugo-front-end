@@ -2,13 +2,6 @@
 <script lang="ts" setup>
 import p from './../package.json';
 
-// Composable
-//const { t } = useLang()
-onMounted(() => { console.log('On Mounted'); })
-
-onUpdated(() => { console.log('OnUpdated');})
-
-
 // meta
 definePageMeta({
   layout: 'page',

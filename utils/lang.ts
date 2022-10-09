@@ -47,8 +47,6 @@ export function LanguageManager() {
 
   // watchers
   watch(localeSetting, (localeSetting) => {
-    console.log(localeSetting);
-    
     localeUserSetting.value = localeSetting
     locale.value = localeSetting
   })

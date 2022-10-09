@@ -52,7 +52,6 @@ export const useImages = defineStore('images', {
 
     async loadMore() {
         this.loading(true);
-        
         const API_URL = `http://localhost:3012/api/v1/search/terms`
         const Url = `${API_URL}/${this.terms}/${this.page+1}`;
         const response = await fetch(Url)

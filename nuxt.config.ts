@@ -13,7 +13,6 @@ declare module '@nuxt/schema' {
 export default defineNuxtConfig({
   // server side rendering mode
   ssr: true,
-
   // app
   app: {
     head: {

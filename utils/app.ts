@@ -1,6 +1,7 @@
 import { ThemeManager } from './theme'
 import { LanguageManager } from './lang'
 import { SearchManager } from './search'
+import { APIManager } from './api'
 
 export interface IApp {
   name: string
@@ -10,7 +11,7 @@ export interface IApp {
   }
 }
 export function AppSetup() {
-  // declare app information
+  // Declare app information
   const app: IApp = {
     name: 'Hugo',
     author: {
@@ -19,6 +20,9 @@ export function AppSetup() {
     },
   }
   useState('app', () => app)
+
+  
+  const apiManager = APIManager();
 
   // use theme manager
   const themeManager = ThemeManager()
@@ -49,5 +53,6 @@ export function AppSetup() {
     themeManager,
     languageManager,
     searchManager,
+    apiManager,
   }
 }

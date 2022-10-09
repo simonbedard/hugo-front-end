@@ -7,6 +7,11 @@ AppSetup();
 
 const images = useImages()
 const theme = useState<ITheme>('theme.current')
+const locale = useState<string>('locale.setting')
+const apiConnexion = useState<boolean>('api.connexion')
+const nuxtApp = useNuxtApp()
+
+
 </script>
 
 <template>
@@ -16,6 +21,16 @@ const theme = useState<ITheme>('theme.current')
     >
       <NuxtLayout>
         <NuxtPage @load-more-images="images.loadMore()"/>
+
+          <Alert
+            v-if="!apiConnexion.value"
+            type="danger"
+            title="The connexion with the backend api is broken"
+            text="Validate that the backend api is currenlty running on: ${nuxtApp.$config.API_BASE_URL}"
+            class="mb-6 fixed bottom-2"
+          />
+
+
       </NuxtLayout>
     </Body>
   </Html>
